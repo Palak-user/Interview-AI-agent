@@ -10,10 +10,22 @@ import interviewRouter from "./routes/interview.route.js"
 import paymentRouter from "./routes/payment.route.js"
 
 const app = express()
+// app.use(cors({
+//     origin:["http://localhost:5173","http://localhost:5174"],
+//     credentials:true
+// }))
 app.use(cors({
-    origin:["http://localhost:5173","http://localhost:5174"],
-    credentials:true
+    origin: process.env.NODE_ENV === 'production'
+        ? "https://interview-ai-agent-1.onrender.com"
+        : ["http://localhost:5173","http://localhost:5174"],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
 }))
+app.options('*', cors())
+
+
+
 
 app.use(express.json())
 app.use(cookieParser())
